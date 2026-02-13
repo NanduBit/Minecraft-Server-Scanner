@@ -2,7 +2,7 @@ import sys
 import json
 from mcstatus import JavaServer
 
-OUTPUT_FILE = "servers.jsonl"
+OUTPUT_FILE = "pinged_servers.jsonl"
 
 def log(message):
     """Helper function to print to the terminal (stderr) immediately."""
@@ -14,15 +14,21 @@ def scan_server(host, port):
         address = f"{host}:{port}"
         server = JavaServer.lookup(address)
         status = server.status()
+        print(server.query())
         status_dump = vars(status)
 
         data = {
             "ip": host,
             "port": port,
-            # "version": status.version.name,
-            # "players_online": status.players.online,
-            # "players_max": status.players.max,
-            # "motd": str(status.description),
+            "version": status.version.name,
+            "motd": str(status.description),
+            "ping": float(status.latency),
+            "players_online": status.players.online,
+            "players_max": status.players.max,
+            "sample_players": status.players.sample,
+            "enforces_secure_chat": status.enforces_secure_chat,
+            "icon": status.icon,
+            "forge_data": status.forge_data,
             "raw_status": status_dump,
         }
 
