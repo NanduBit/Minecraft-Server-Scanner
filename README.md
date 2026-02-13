@@ -13,5 +13,5 @@ pip install mcstatus
 sudo ./masscan/bin/masscan 0.0.0.0/0 -p25565 --rate 50000 --excludefile masscan/data/exclude.conf -oL - | python3 main.py
 ```
 `
---rate 50000 can be chnages as u wish
+--rate 50000 can be changed as u wish
 `
