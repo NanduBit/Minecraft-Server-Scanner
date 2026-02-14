@@ -1,8 +1,10 @@
 import sys
 import json
+import socket
 from mcstatus import JavaServer
 
 OUTPUT_FILE = "pinged_servers.jsonl"
+TIMEOUT = 10  # seconds
 
 def log(message):
     """Helper function to print to the terminal (stderr) immediately."""
@@ -11,10 +13,19 @@ def log(message):
 
 def scan_server(host, port):
     try:
+        # Set socket timeout to allow enough time for server response
+        socket.setdefaulttimeout(TIMEOUT)
+        
         address = f"{host}:{port}"
         server = JavaServer.lookup(address)
         status = server.status()
-        print(server.query())
+        
+        # try:
+        #     query_data = server.query()
+        #     print(query_data)
+        # except Exception as query_exc:
+        #     log(f"   ⚠️ Query failed (non-critical): {query_exc}")
+        
         status_dump = vars(status)
 
         data = {
